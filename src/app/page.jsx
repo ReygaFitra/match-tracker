@@ -1,7 +1,10 @@
+'use client';
+import { Container } from '@chakra-ui/react';
+
 export default function Home() {
   return (
-    <main>
+    <Container maxW="4xl">
       <div>test app</div>
-    </main>
+    </Container>
   );
 }
