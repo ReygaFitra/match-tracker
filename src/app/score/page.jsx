@@ -12,7 +12,6 @@ export const metadata = {
 };
 
 export default function Score() {
-  const [clubs, setClubs] = useState([]);
   const [selectedHomeClub, setSelectedHomeClub] = useState('');
   const [selectedAwayClub, setSelectedAwayClub] = useState('');
   const router = useRouter();
@@ -41,20 +40,6 @@ export default function Score() {
       });
     router.refresh();
   };
-
-  const getData = async () => {
-    try {
-      const res = await fetch('/api/club');
-      const json = await res.json();
-      setClubs(json.data || []);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
-
-  useEffect(() => {
-    getData();
-  }, []);
 
   return (
     <Container maxW="4xl" pt={10}>

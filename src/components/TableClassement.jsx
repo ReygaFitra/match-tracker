@@ -1,6 +1,22 @@
 import { Flex, Stack, Table, TableCaption, TableContainer, Tbody, Td, Text, Tfoot, Th, Thead, Tr } from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
 
 const TableClassement = () => {
+  const [clubs, setClubs] = useState([]);
+
+  const getData = async () => {
+    try {
+      const res = await fetch('/api/club');
+      const json = await res.json();
+      setClubs(json.data || []);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
   return (
     <TableContainer shadow="md" rounded="sm" overflow="scroll" w="full">
       <Table variant="striped">
@@ -35,39 +51,19 @@ const TableClassement = () => {
           </Tr>
         </Thead>
         <Tbody>
-          <Tr fontWeight="semibold">
-            <Td>1</Td>
-            <Td>Club1</Td>
-            <Td isNumeric>1</Td>
-            <Td isNumeric>1</Td>
-            <Td isNumeric>1</Td>
-            <Td isNumeric>1</Td>
-            <Td isNumeric>1</Td>
-            <Td isNumeric>1</Td>
-            <Td isNumeric>1</Td>
-          </Tr>
-          <Tr fontWeight="semibold">
-            <Td>1</Td>
-            <Td>Club1</Td>
-            <Td isNumeric>1</Td>
-            <Td isNumeric>1</Td>
-            <Td isNumeric>1</Td>
-            <Td isNumeric>1</Td>
-            <Td isNumeric>1</Td>
-            <Td isNumeric>1</Td>
-            <Td isNumeric>1</Td>
-          </Tr>
-          <Tr fontWeight="semibold">
-            <Td>1</Td>
-            <Td>Club1</Td>
-            <Td isNumeric>1</Td>
-            <Td isNumeric>1</Td>
-            <Td isNumeric>1</Td>
-            <Td isNumeric>1</Td>
-            <Td isNumeric>1</Td>
-            <Td isNumeric>1</Td>
-            <Td isNumeric>1</Td>
-          </Tr>
+          {clubs.map((club, index) => (
+            <Tr key={index} fontWeight="semibold">
+              <Td>{index + 1}</Td>
+              <Td>{club.name}</Td>
+              <Td isNumeric>1</Td>
+              <Td isNumeric>1</Td>
+              <Td isNumeric>1</Td>
+              <Td isNumeric>1</Td>
+              <Td isNumeric>1</Td>
+              <Td isNumeric>1</Td>
+              <Td isNumeric>1</Td>
+            </Tr>
+          ))}
         </Tbody>
       </Table>
     </TableContainer>

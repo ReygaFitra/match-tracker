@@ -20,12 +20,27 @@ import {
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const FormMatch = (props) => {
-  const { btn_text, header, onsubmit, value, option } = props;
+  const { btn_text, header, onsubmit } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isLoading, setIsLoading] = useState(false);
+  const [clubs, setClubs] = useState([]);
+
+  const getData = async () => {
+    try {
+      const res = await fetch('/api/club');
+      const json = await res.json();
+      setClubs(json.data || []);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   const handleClick = () => {
     onOpen();
@@ -56,7 +71,11 @@ const FormMatch = (props) => {
                       Home
                     </Heading>
                     <Select placeholder="Select Club" size="sm" variant="filled" color="black" w="300px">
-                      <option value={value}>{option}</option>
+                      {clubs.map((club) => (
+                        <option key={club.id} value={club.id}>
+                          {club.name}
+                        </option>
+                      ))}
                     </Select>
                     <HStack>
                       <Text>Score : </Text>
@@ -73,7 +92,11 @@ const FormMatch = (props) => {
                       Away
                     </Heading>
                     <Select placeholder="Select Club" size="sm" variant="filled" color="black" w="300px">
-                      <option value={value}>{option}</option>
+                      {clubs.map((club) => (
+                        <option key={club.id} value={club.id}>
+                          {club.name}
+                        </option>
+                      ))}
                     </Select>
                     <HStack>
                       <Text>Score : </Text>
