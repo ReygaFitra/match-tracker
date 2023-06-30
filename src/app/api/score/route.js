@@ -1,7 +1,7 @@
 import prisma from '@/utils/prisma';
 import { NextResponse } from 'next/server';
 
-export const Score_POST = async (req) => {
+export const POST = async (req) => {
   const { homeClubId, awayClubId, homeScore, awayScore } = await req.JSON();
   try {
     await prisma.score.create({
@@ -23,7 +23,7 @@ export const Score_POST = async (req) => {
   }
 };
 
-export const Score_GET = async () => {
+export const GET = async () => {
   const get = await prisma.score.findMany();
   return NextResponse.json({
     data: get,

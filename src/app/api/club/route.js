@@ -1,8 +1,8 @@
 import prisma from '@/utils/prisma';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
-export const Club_POST = async (req) => {
-  const { name, city, points } = await req.JSON();
+export const POST = async (req) => {
+  const { name, city, points } = await req.json();
   try {
     await prisma.club.create({
       data: {
@@ -22,7 +22,7 @@ export const Club_POST = async (req) => {
   }
 };
 
-export const Club_GET = async () => {
+export const GET = async () => {
   const get = await prisma.club.findMany();
   return NextResponse.json({
     data: get,
