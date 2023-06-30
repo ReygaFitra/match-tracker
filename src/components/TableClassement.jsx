@@ -2,7 +2,7 @@ import { Flex, Stack, Table, TableCaption, TableContainer, Tbody, Td, Text, Tfoo
 
 const TableClassement = () => {
   return (
-    <TableContainer shadow="md" rounded="sm">
+    <TableContainer shadow="md" rounded="sm" overflow="scroll" w="full">
       <Table variant="striped">
         <TableCaption>Footbal Classement Data Table</TableCaption>
         <Thead>

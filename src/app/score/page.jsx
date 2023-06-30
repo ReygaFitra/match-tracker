@@ -12,7 +12,7 @@ export default function Score() {
   return (
     <Container maxW="4xl" pt={10}>
       <Form />
-      <Grid templateColumns="repeat(3, 1fr)" gap={5} mt={10}>
+      <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(3, 1fr)' }} gap={5} mt={10}>
         <GridItem>
           <CardLayout />
         </GridItem>
