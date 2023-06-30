@@ -1,10 +1,10 @@
 'use client';
 import { Box, Button, Container, Flex, Heading, Text, VStack } from '@chakra-ui/react';
-import Link from 'next/link';
+import NextLink from 'next/link';
 
 export default function Home() {
   return (
-    <Container maxW="4xl" py={4}>
+    <Container maxW="4xl" pt={4}>
       <Flex alignItems="center" justifyContent="center">
         <VStack spacing="2">
           <Box>
@@ -61,10 +61,10 @@ export default function Home() {
           </Heading>
           <Box display="flex" alignItems="center" gap={2}>
             <Button size="sm" variant="outline" rounded="sm" bgColor="#9681EB" color="white" _hover={{ bgColor: '#6527BE', color: 'white', rounded: 'sm' }}>
-              <Link href="/score">View Score</Link>
+              <NextLink href="/score">View Score</NextLink>
             </Button>
             <Button size="sm" variant="solid" rounded="sm" bgColor="#6527BE" color="white" _hover={{ bgColor: '#9681EB', rounded: 'sm' }}>
-              <Link href="/classement">View Classement</Link>
+              <NextLink href="/classement">View Classement</NextLink>
             </Button>
           </Box>
         </VStack>

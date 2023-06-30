@@ -1,23 +1,23 @@
 import { Button, Flex, Heading, HStack, Divider } from '@chakra-ui/react';
-import Link from 'next/link';
+import NextLink from 'next/link';
 
 const Navbar = () => {
   return (
     <Flex as={'nav'} p="10px" alignItems="center" justifyContent="space-evenly" shadow="sm">
-      <Heading size="md" color="#6527BE">
-        <Link href="/">Home</Link>
+      <Heading size="md" color="#6527BE" _hover={{ color: '#9681EB', transition: '.5s' }}>
+        <NextLink href="/">Home</NextLink>
       </Heading>
       <HStack>
         <Button size="sm" variant="ghost" rounded="sm" _hover={{ bgColor: '#9681EB', color: 'white', rounded: 'sm' }}>
-          <Link href="/club">Club</Link>
+          <NextLink href="/club">Club</NextLink>
         </Button>
         <Divider orientation="vertical" height={7} />
         <Button size="sm" variant="ghost" rounded="sm" _hover={{ bgColor: '#9681EB', color: 'white', rounded: 'sm' }}>
-          <Link href="/score">Score</Link>
+          <NextLink href="/score">Score</NextLink>
         </Button>
         <Divider orientation="vertical" height={7} />
         <Button size="sm" variant="ghost" rounded="sm" _hover={{ bgColor: '#9681EB', color: 'white', rounded: 'sm' }}>
-          <Link href="/classement">Classement</Link>
+          <NextLink href="/classement">Classement</NextLink>
         </Button>
       </HStack>
     </Flex>
