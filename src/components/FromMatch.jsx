@@ -21,12 +21,46 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 const FormMatch = (props) => {
-  const { btn_text, header, onsubmit } = props;
+  const { btn_text, header } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isLoading, setIsLoading] = useState(false);
   const [clubs, setClubs] = useState([]);
+  const [homeClubId, setHomeClubId] = useState('');
+  const [awayClubId, setAwayClubId] = useState('');
+  const router = useRouter();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    const formData = new FormData(e.target);
+    const homeScore = formData.get('homeScore');
+    const awayScore = formData.get('awayScore');
+
+    await fetch('/api/score', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        homeClubId,
+        awayClubId,
+        homeScore,
+        awayScore,
+      }),
+    })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    setIsLoading(false);
+    router.refresh();
+  };
 
   const getData = async () => {
     try {
@@ -64,13 +98,13 @@ const FormMatch = (props) => {
           </DrawerHeader>
           <DrawerBody bgColor="#6527BE" color="white">
             <Container maxW="2xl">
-              <FormControl as="form" isRequired onSubmit={onsubmit}>
+              <FormControl as="form" isRequired onSubmit={handleSubmit}>
                 <Flex justifyContent="center" alignItems="center" gap={5}>
                   <Box>
                     <Heading as="h3" my="10px" textAlign="center">
                       Home
                     </Heading>
-                    <Select placeholder="Select Club" size="sm" variant="filled" color="black" w="300px">
+                    <Select placeholder="Select Club" size="sm" variant="filled" color="black" w="300px" onChange={(e) => setHomeClubId(e.target.value)}>
                       {clubs.map((club) => (
                         <option key={club.id} value={club.id}>
                           {club.name}
@@ -79,7 +113,7 @@ const FormMatch = (props) => {
                     </Select>
                     <HStack>
                       <Text>Score : </Text>
-                      <Input type="number" id="homeScore" name="homeScore" min={0} size="sm" variant="filled" mt={2} w="50px" />
+                      <Input type="number" id="homeScore" name="homeScore" min={0} size="sm" variant="filled" mt={2} w="50px" color="black" />
                     </HStack>
                   </Box>
                   <Box>
@@ -91,7 +125,7 @@ const FormMatch = (props) => {
                     <Heading as="h3" my="10px" textAlign="center">
                       Away
                     </Heading>
-                    <Select placeholder="Select Club" size="sm" variant="filled" color="black" w="300px">
+                    <Select placeholder="Select Club" size="sm" variant="filled" color="black" w="300px" onChange={(e) => setAwayClubId(e.target.value)}>
                       {clubs.map((club) => (
                         <option key={club.id} value={club.id}>
                           {club.name}
@@ -100,7 +134,7 @@ const FormMatch = (props) => {
                     </Select>
                     <HStack>
                       <Text>Score : </Text>
-                      <Input type="number" id="homeScore" name="homeScore" min={0} size="sm" variant="filled" mt={2} w="50px" />
+                      <Input type="number" id="awayScore" name="awayScore" min={0} size="sm" variant="filled" mt={2} w="50px" color="black" />
                     </HStack>
                   </Box>
                 </Flex>

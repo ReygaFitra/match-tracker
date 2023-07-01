@@ -1,10 +1,10 @@
-import { Box, Card, CardBody, Heading, Stack, Text } from '@chakra-ui/react';
+import { Box, Card, CardBody, Divider, Heading, Stack, Text } from '@chakra-ui/react';
 
 const CardLayout = (props) => {
   const { club_city, club_name, club_point } = props;
   return (
     <>
-      <Card w={'full'} p="10px">
+      <Card w={'full'} p="10px" h={'full'}>
         <CardBody>
           <Stack>
             <Box>
@@ -14,8 +14,9 @@ const CardLayout = (props) => {
               <Text pt="2" fontSize="sm">
                 {club_city}
               </Text>
-              <Text pt="2" fontSize="sm">
-                point: {club_point}
+              <Divider />
+              <Text pt="2" fontSize="lg" fontWeight="bold" textAlign="center">
+                {club_point}
               </Text>
             </Box>
           </Stack>

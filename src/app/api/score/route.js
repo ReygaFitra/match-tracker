@@ -2,18 +2,19 @@ import prisma from '@/utils/prisma';
 import { NextResponse } from 'next/server';
 
 export const POST = async (req) => {
-  const { homeClubId, awayClubId, homeScore, awayScore } = await req.JSON();
+  const { homeClubId, awayClubId, homeScore, awayScore } = await req.json();
   try {
-    await prisma.score.create({
+    const createdScore = await prisma.score.create({
       data: {
-        homeClubId,
-        awayClubId,
-        homeScore,
-        awayScore,
+        homeClubId: parseInt(homeClubId),
+        awayClubId: parseInt(awayClubId),
+        homeScore: parseInt(homeScore),
+        awayScore: parseInt(awayScore),
       },
     });
     return NextResponse.json({
       message: 'Score created',
+      data: createdScore,
     });
   } catch (error) {
     console.log('something went wrong: ', error);

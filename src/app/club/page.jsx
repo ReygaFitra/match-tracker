@@ -79,7 +79,7 @@ export default function Club() {
       <Grid templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(3, 1fr)' }} gap={5} mt={10}>
         {clubs.map((club) => (
           <GridItem key={club.id}>
-            <CardLayout club_name={club.name} club_city={club.city} club_point={club.points} />
+            <CardLayout club_name={club.name} club_city={club.city} club_point={`Total Point: ${club.points}`} />
           </GridItem>
         ))}
       </Grid>
