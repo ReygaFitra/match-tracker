@@ -28,3 +28,25 @@ export const GET = async () => {
     data: get,
   });
 };
+
+export const PUT = async (req) => {
+  const { id, points } = await req.json();
+  try {
+    await prisma.club.update({
+      where: {
+        id: parseInt(id),
+      },
+      data: {
+        points: parseInt(points),
+      },
+    });
+    return NextResponse.json({
+      message: 'Club updated',
+    });
+  } catch (error) {
+    console.log('something went wrong: ', error);
+    return NextResponse.json({
+      message: 'Failed to update club',
+    });
+  }
+};

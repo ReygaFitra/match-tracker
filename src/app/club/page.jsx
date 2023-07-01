@@ -28,7 +28,6 @@ export default function Club() {
       body: JSON.stringify({
         name: formData.get('name'),
         city: formData.get('city'),
-        points: 0,
       }),
     })
       .then((res) => {

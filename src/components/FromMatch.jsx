@@ -37,8 +37,8 @@ const FormMatch = (props) => {
     setIsLoading(true);
 
     const formData = new FormData(e.target);
-    const homeScore = formData.get('homeScore');
-    const awayScore = formData.get('awayScore');
+    const homeScore = parseInt(formData.get('homeScore'));
+    const awayScore = parseInt(formData.get('awayScore'));
 
     await fetch('/api/score', {
       method: 'POST',
@@ -51,13 +51,10 @@ const FormMatch = (props) => {
         homeScore,
         awayScore,
       }),
-    })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    }).catch((err) => {
+      console.log(err);
+    });
+
     setIsLoading(false);
     router.refresh();
   };
