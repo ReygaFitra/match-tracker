@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 
 const TableClassement = () => {
   const [clubs, setClubs] = useState([]);
+  const [matches, setMatches] = useState([]);
 
   const getData = async () => {
     try {
@@ -14,9 +15,62 @@ const TableClassement = () => {
     }
   };
 
+  const getDataMatch = async () => {
+    try {
+      const res = await fetch('/api/score');
+      const json = await res.json();
+      setMatches(json.data || []);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  const getTotalMatches = (clubId) => {
+    const homeMatches = matches.filter((match) => match.homeClubId === clubId);
+    const awayMatches = matches.filter((match) => match.awayClubId === clubId);
+    return homeMatches.length + awayMatches.length;
+  };
+
+  const getWinMatches = (clubId) => {
+    const homeMatches = matches.filter((match) => match.homeClubId === clubId);
+    const awayMatches = matches.filter((match) => match.awayClubId === clubId);
+    const winHomeMatches = homeMatches.filter((match) => match.homeScore > match.awayScore);
+    const winAwayMatches = awayMatches.filter((match) => match.awayScore > match.homeScore);
+    return winHomeMatches.length + winAwayMatches.length;
+  };
+
+  const getLoseMatches = (clubId) => {
+    const homeMatches = matches.filter((match) => match.homeClubId === clubId);
+    const awayMatches = matches.filter((match) => match.awayClubId === clubId);
+    const winHomeMatches = homeMatches.filter((match) => match.homeScore < match.awayScore);
+    const winAwayMatches = awayMatches.filter((match) => match.awayScore < match.homeScore);
+    return winHomeMatches.length + winAwayMatches.length;
+  };
+
+  const getDrawMatches = (clubId) => {
+    const homeMatches = matches.filter((match) => match.homeClubId === clubId);
+    const awayMatches = matches.filter((match) => match.awayClubId === clubId);
+    const winHomeMatches = homeMatches.filter((match) => match.homeScore === match.awayScore);
+    const winAwayMatches = awayMatches.filter((match) => match.awayScore === match.homeScore);
+    return winHomeMatches.length + winAwayMatches.length;
+  };
+
+  const getTotalGoalsKicked = (clubId) => {
+    return matches.reduce((total, match) => {
+      if (match.homeClubId === clubId) {
+        return total + match.awayScore;
+      } else if (match.awayClubId === clubId) {
+        return total + match.homeScore;
+      }
+      return total;
+    }, 0);
+  };
+
   useEffect(() => {
     getData();
-  }, []);
+    getDataMatch();
+  }, [clubs, matches]);
+
   return (
     <TableContainer shadow="md" rounded="sm" overflow="scroll" w="full">
       <Table variant="striped">
@@ -51,19 +105,29 @@ const TableClassement = () => {
           </Tr>
         </Thead>
         <Tbody>
-          {clubs.map((club, index) => (
-            <Tr key={index} fontWeight="semibold">
-              <Td>{index + 1}</Td>
-              <Td>{club.name}</Td>
-              <Td isNumeric>1</Td>
-              <Td isNumeric>1</Td>
-              <Td isNumeric>1</Td>
-              <Td isNumeric>1</Td>
-              <Td isNumeric>1</Td>
-              <Td isNumeric>1</Td>
-              <Td isNumeric>1</Td>
-            </Tr>
-          ))}
+          {clubs.map((club, index) => {
+            const homeMatches = matches.filter((match) => match.homeClubId === club.id);
+            const totalMatches = getTotalMatches(club.id);
+            const winMatches = getWinMatches(club.id);
+            const loseMatches = getLoseMatches(club.id);
+            const drawMatches = getDrawMatches(club.id);
+            const goalsMade = homeMatches.reduce((total, match) => total + match.homeScore, 0);
+            const goalsKicked = getTotalGoalsKicked(club.id);
+
+            return (
+              <Tr key={index} fontWeight="semibold">
+                <Td>{index + 1}</Td>
+                <Td>{club.name}</Td>
+                <Td isNumeric>{totalMatches}</Td>
+                <Td isNumeric>{winMatches}</Td>
+                <Td isNumeric>{drawMatches}</Td>
+                <Td isNumeric>{loseMatches}</Td>
+                <Td isNumeric>{goalsMade}</Td>
+                <Td isNumeric>{goalsKicked}</Td>
+                <Td isNumeric>{club.points}</Td>
+              </Tr>
+            );
+          })}
         </Tbody>
       </Table>
     </TableContainer>
